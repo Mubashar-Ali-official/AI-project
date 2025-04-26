@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Recommended Phones</title>
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: #f2f9fb;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        h1 {
+            text-align: center;
+            color: #1a6e85;
+            margin-bottom: 30px;
+        }
+
+        .card {
+            background: white;
+            padding: 20px;
+            margin-bottom: 20px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+
+        .card-details {
+            flex-grow: 1;
+        }
+
+        .card img {
+            max-width: 120px;
+            margin-left: 20px;
+            border-radius: 8px;
+            border: 1px solid #ddd;
+        }
+
+        .no-results {
+            text-align: center;
+            color: red;
+            font-weight: bold;
+        }
+
+        .back-button {
+            display: block;
+            width: 200px;
+            margin: 30px auto;
+            padding: 12px;
+            text-align: center;
+            background-color: #1a6e85;
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: bold;
+        }
+
+        .back-button:hover {
+            background-color: #134d5f;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Top 5 Recommendations</h1>
+
+        {% if prediction is not none and not prediction.empty %}
+            {% for index, phone in prediction.iterrows() %}
+            <div class="card">
+                <div class="card-details">
+                    <h3>{{ phone.Brand }} {{ phone.Model }}</h3>
+                    <p><strong>Price:</strong> {{ phone.price }}</p>
+                    <p><strong>Rating:</strong> {{ phone.ratings }}</p>
+                    <p><strong>Specifications:</strong> {{ phone.specifications }}</p>
+                </div>
+                {% if phone.imgURL %}
+                <img src="{{ phone.imgURL }}" alt="{{ phone.Model }}">
+                {% endif %}
+            </div>
+            {% endfor %}
+        {% else %}
+            <p class="no-results">No phones found in that price range and brand.</p>
+        {% endif %}
+
+        <a href="{{ url_for('home') }}" class="back-button">🔙 Search Again</a>
+    </div>
+</body>
+</html>
